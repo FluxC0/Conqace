@@ -68,9 +68,9 @@ def version_checking():
 
 
 def gentoo_emerge():
-    logger.info("Syncing with emaint.")
-    time.sleep(2)
-    os.system("emaint -a sync")
+    # logger.info("Syncing with emaint.")
+    # time.sleep(2)
+    # os.system("emaint -a sync")
 
     logger.info("Updating @world. this may take a while...")
     if args.verbose:
