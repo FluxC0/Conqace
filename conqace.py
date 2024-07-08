@@ -46,8 +46,8 @@ def notification():
     r = requests.post("https://api.pushed.co/1/push", data=payload)
     if "error" in r.json():
         logger.error(r.text)
-        logger.error("Failed to send push notification ")
-        logger.warning("Update Complete, but notification failed. Exiting Application. ")
+        logger.error("Failed to send push notification")
+        logger.warning("Update Complete, but notification failed. Exiting Application.")
         exit(1)
     else:
         logger.success("Push notification sent")
@@ -57,10 +57,10 @@ def notification():
 
 def version_checking():
     if distro_name in ("ubuntu", "debian", "linuxmint", "raspbian"):
-        logger.info("Distro identified as Debian/Debian based. Using apt. 󰣚 ")
+        logger.info("Distro identified as Debian/Debian based. Using apt. ")
         ubuntu_apt()
     elif distro.id() in "gentoo":
-        logger.info("Distro identified as Gentoo. Using emerge/portage. 󰣨")
+        logger.info("Distro identified as Gentoo. Using emerge/portage. ")
         gentoo_emerge()
     else:
         logger.error("Your distribution is unsupported.  ")
@@ -68,9 +68,9 @@ def version_checking():
 
 
 def gentoo_emerge():
-    logger.info("Syncing with emaint.")
-    time.sleep(2)
-    os.system("emaint -a sync")
+    # logger.info("Syncing with emaint.")
+    # time.sleep(2)
+    # os.system("emaint -a sync")
 
     logger.info("Updating @world. this may take a while...")
     if args.verbose:
