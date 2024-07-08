@@ -71,7 +71,13 @@ def gentoo_emerge():
     logger.info("Syncing with emaint.")
     time.sleep(2)
     # Artificial delay in place to allow user to read the message before emaint syncs.
-    os.system("emaint -a sync")
+import subprocess
+
+logger.info("Syncing with emaint.")
+time.sleep(2)
+subprocess.run(["emaint", "-a", "sync"], check=True)
+
+logger.info("Updating @world. this may take a while...")
 
     logger.info("Updating @world. this may take a while...")
     if args.verbose:
