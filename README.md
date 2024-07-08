@@ -5,7 +5,7 @@
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 
 
-# Pushmerger
+# Conqace
 
 A simple python script that takes care of syncing and updating @world for you, and then sends a push notification to your phone when completed!
 
@@ -24,6 +24,6 @@ Be sure to add in your [Pushed app key & secret](https://about.pushed.co/docs/ap
   cd pushmerger
   poetry install 
   cp .env .env.example
-  python pushmerger.py
+  python conqace.py
 ```
     
