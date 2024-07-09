@@ -5,7 +5,7 @@ description = "A Python-based update manager."
 authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 packages = [
-    { include = "conqace", from = "src" },
+    {include = "src/Conqace/*.py"},
 ]
 
 [tool.poetry.dependencies]
