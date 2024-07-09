@@ -5,7 +5,7 @@
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 
 
-![Conqace](./Conqase.png)
+![Conqace](./conqase.png)
 
 A simple python script that takes care of syncing and updating @world for you, and then sends a push notification to your phone when completed!
 
