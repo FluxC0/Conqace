@@ -22,7 +22,7 @@ Be sure to add in your [Pushed app key & secret](https://about.pushed.co/docs/ap
 ```bash
   git clone 
   cd pushmerger
-  poetry shell
+  poetry install
   cp .env .env.example
   python conqace.py
 ```
