@@ -166,5 +166,6 @@ def ubuntu_apt():
     notification()
 
 
-payload = first_run()
-start_update()
+if __name__ == "__main__":
+    payload = first_run()
+    start_update()
