@@ -30,7 +30,8 @@ def first_run():
         print("Conqace v" + __version__)
         exit(0)
     if keyring.get_password('pushed_api', '<appkey>') is None or keyring.get_password('pushed_api', '<appsecret>') is None:
-        appkey = input("Enter your pushed app key (not secret). this will be safely stored in your system's keyring.")
+        import getpass
+        appkey = getpass.getpass("Enter your pushed app key (not secret). this will be safely stored in your system's keyring: ")
         appsecret = input("Enter your pushed app secret (not key). this will be safely stored in your system's keyring.")
         keyring.set_password('pushed_api', '<appkey>', appkey)
         keyring.set_password('pushed_api', '<appsecret>', appsecret)
