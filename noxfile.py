@@ -47,7 +47,7 @@ def tests(session: nox.Session) -> None:
     env = {"TERM": "dumb"}
 
     session.run("coverage", "run", "-m", "pytest", *session.posargs, env=env)
-    session.run("coverage", "run", "-m", "doc2dash", "--version")
+    session.run("coverage", "run", "-m", "conqace", "--version")
 
     if os.environ.get("CI") != "true":
         session.notify("coverage_report")
@@ -123,13 +123,13 @@ def pin_docs(session: nox.Session) -> None:
 def update_rtd_versions(session: nox.Session) -> None:
     session.install("urllib3")
 
-    session.run("python", "docs/update-rtd-versions.py", "doc2dash")
+    session.run("python", "docs/update-rtd-versions.py", "conqace")
 
 
 @nox.session
 def oxidize(session: nox.Session) -> None:
     """
-    Build a doc2dash binary with PyOxidizer.
+    Build a conqace binary with PyOxidizer.
     """
     env = os.environ.copy()
     env["PIP_REQUIRE_VIRTUALENV"] = "0"
@@ -210,14 +210,14 @@ def download_and_package_binaries(session: nox.Session) -> None:
     for arch_path in Path("binaries").glob("*"):
         (triple_path,) = tuple(arch_path.glob("*"))
         with session.chdir(triple_path / "release/install"):
-            d = Path("doc2dash")
+            d = Path("conqace")
             if d.exists():  # i.e. not Windows
                 d.chmod(0o755)
             session.run(
                 "zip",
-                f"../../../../doc2dash.{triple_path.name}.zip",
+                f"../../../../conqace.{triple_path.name}.zip",
                 "COPYING.txt",
-                "doc2dash",
-                "doc2dash.exe",
+                "conqace",
+                "conqace.exe",
                 external=True,
             )
