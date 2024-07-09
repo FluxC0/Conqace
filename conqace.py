@@ -16,10 +16,16 @@ parser.add_argument("--verbose", "-v", help="runs command verbosely. helpful for
 parser.add_argument("--flatpak", "-f", help="updates flatpak packages as well.", action="store_true")
 parser.add_argument("--snap", "-s", help="updates snaps as well.", action="store_true")
 parser.add_argument("--no-notify", "-N", help="skips the phone notification.", action="store_true")
+parser.add_argument("--version", "-V", help="displays the version.", action="store_true")
 args = parser.parse_args()
 
+__version__ = "1.0.0"
 
-def first_run():
+
+def first_run(conqace=None):
+    if args.version:
+        print("Conqace v" + __version__)
+        exit(0)
     if os.path.exists(".env"):
         load_dotenv()
         temppl = {
@@ -34,15 +40,15 @@ def first_run():
         with open(r".env", "w+") as environfile:
             logger.info("No .env file found. Creating new one.")
             logger.info("Please enter in your Pushed App Key (not the secret)")
-        logger.info("No .env file found. Creating new one.")
-        logger.info("Please enter in your Pushed App Key (not the secret)")
-        appkey = input()
-        logger.info("Please enter in your App Secret (not the key)")
-        appsecret = input()
-        logger.info("writing to .env file...")
-        environfile.write(f"PUSHED_APP_KEY={appkey}\nPUSHED_APP_SECRET={appsecret}")
-        logger.info("done.")
-        environfile.close()
+            logger.info("No .env file found. Creating new one.")
+            logger.info("Please enter in your Pushed App Key (not the secret)")
+            appkey = input()
+            logger.info("Please enter in your App Secret (not the key)")
+            appsecret = input()
+            logger.info("writing to .env file...")
+            environfile.write(f"PUSHED_APP_KEY={appkey}\nPUSHED_APP_SECRET={appsecret}")
+            logger.info("done.")
+
         load_dotenv()
         temppl = {
             "app_key": os.getenv("PUSHED_APP_KEY"),
@@ -50,7 +56,7 @@ def first_run():
             "target_type": "app",
             "content": "Update Successful."
         }
-        return temppl
+    return temppl
 
 
 def snappak():
@@ -131,7 +137,6 @@ def gentoo_emerge():
     logger.info("Syncing with emaint.")
     time.sleep(2)
     # Artificial delay in place to allow user to read the message before emaint syncs.
-
 
     logger.info("Syncing with emaint.")
     time.sleep(2)
