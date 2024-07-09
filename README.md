@@ -7,7 +7,7 @@
 
 ![Conqace](./conqase.png)
 
-A simple python script that takes care of syncing and updating @world for you, and then sends a push notification to your phone when completed!
+A simple python script that takes care of updates for you, and then sends a push notification to your phone when completed!
 
 
 ## Authors
