@@ -1,16 +1,9 @@
 ---
 name: Build & maybe upload PyPI package
 
-on:
-  push:
-    branches: [main]
-
-  pull_request:
-    branches: [main]
-  release:
-    types:
-      - published
-  workflow_dispatch:
+on: [push, pull_request, release]
+  
+  
 
 permissions:
   contents: read
