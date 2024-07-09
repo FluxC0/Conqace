@@ -65,7 +65,7 @@ def coverage_report(session: nox.Session) -> None:
 def mypy(session: nox.Session) -> None:
     session.install(".[typing]", "nox")
 
-    session.run("mypy", "src", "docs/update-rtd-versions.py", "noxfile.py")
+    session.run("mypy", "source", "docs/update-rtd-versions.py", "noxfile.py")
 
 
 @nox.session
