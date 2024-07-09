@@ -16,7 +16,7 @@ def make_exe():
     python_config = dist.make_python_interpreter_config()
 
     # Evaluate a string as Python code when the interpreter starts.
-    python_config.run_command = "from doc2dash.__main__ import main; main()"
+    python_config.run_command = "from conqace.__main__ import main; main()"
 
     # Produce a PythonExecutable from a Python distribution, embedded
     # resources, and other options. The returned object represents the
