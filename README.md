@@ -3,7 +3,7 @@
 
 
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
-
+[![Documentation Status](https://readthedocs.org/projects/conqace/badge/?version=latest)](https://conqace.readthedocs.io/en/latest/?badge=latest)
 
 ![Conqace](./conqase.png)
 
