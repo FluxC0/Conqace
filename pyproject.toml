@@ -25,3 +25,22 @@ pip-tools = "^7.4.1"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[project]
+name = "conqace_FluxC0"
+version = "0.2.0"
+authors = [
+  { name="Kasen Engel", email="kasen.engel@gmail.com" },
+]
+description = "A Handy update manager that supports most major linux distributions. "
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GPLv3.0 License",
+    "Operating System :: Linux",
+]
+
+[project.urls]
+Homepage = "https://github.com/fluxc0/conqace"
+Issues = "https://github.com/fluxc0/conqace/issues"
