@@ -23,7 +23,7 @@ Be sure to add in your [Pushed app key & secret](https://about.pushed.co/docs/ap
   git clone 
   cd conqace
   poetry install
-  cp .env .env.example
+  
   python conqace.py
 ```
     

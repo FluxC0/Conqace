@@ -18,13 +18,39 @@ parser.add_argument("--snap", "-s", help="updates snaps as well.", action="store
 parser.add_argument("--no-notify", "-N", help="skips the phone notification.", action="store_true")
 args = parser.parse_args()
 
-load_dotenv()
-payload = {
-    "app_key": os.getenv("PUSHED_APP_KEY"),
-    "app_secret": os.getenv('PUSHED_APP_SECRET'),
-    "target_type": "app",
-    "content": "Update Successful."
-}
+
+def first_run():
+    if os.path.exists(".env"):
+        load_dotenv()
+        temppl = {
+            "app_key": os.getenv("PUSHED_APP_KEY"),
+            "app_secret": os.getenv('PUSHED_APP_SECRET'),
+            "target_type": "app",
+            "content": "Update Successful."
+        }
+        return temppl
+    else:
+
+        with open(r".env", "w+") as environfile:
+            logger.info("No .env file found. Creating new one.")
+            logger.info("Please enter in your Pushed App Key (not the secret)")
+        logger.info("No .env file found. Creating new one.")
+        logger.info("Please enter in your Pushed App Key (not the secret)")
+        appkey = input()
+        logger.info("Please enter in your App Secret (not the key)")
+        appsecret = input()
+        logger.info("writing to .env file...")
+        environfile.write(f"PUSHED_APP_KEY={appkey}\nPUSHED_APP_SECRET={appsecret}")
+        logger.info("done.")
+        environfile.close()
+        load_dotenv()
+        temppl = {
+            "app_key": os.getenv("PUSHED_APP_KEY"),
+            "app_secret": os.getenv('PUSHED_APP_SECRET'),
+            "target_type": "app",
+            "content": "Update Successful."
+        }
+        return temppl
 
 
 def snappak():
@@ -99,6 +125,8 @@ def arch_pacman():
     logger.info("complete.")
     logger.info("sending notification.")
     notification()
+
+
 def gentoo_emerge():
     logger.info("Syncing with emaint.")
     time.sleep(2)
@@ -133,4 +161,5 @@ def ubuntu_apt():
     notification()
 
 
+payload = first_run()
 start_update()
