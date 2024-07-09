@@ -53,3 +53,5 @@ register_target("install", make_install, depends = ["exe"], default = True)
 # Resolve whatever targets the invoker of this configuration file is requesting
 # be resolved.
 resolve_targets()
+
+policy.resources_location_fallback = "filesystem-relative:prefix"
