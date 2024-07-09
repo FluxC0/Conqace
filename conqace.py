@@ -19,8 +19,7 @@ parser.add_argument("--flatpak", "-f", help="updates flatpak packages as well.",
 parser.add_argument("--snap", "-s", help="updates snaps as well.", action="store_true")
 parser.add_argument("--no-notify", "-N", help="skips the phone notification.", action="store_true")
 parser.add_argument("--version", "-V", help="displays the version.", action="store_true")
-parser.add_argument("--pretend", "-p", help="goes through the process without actually making "
-                                            "changes to your computer.", action="store_true")
+parser.add_argument("--pretend", "-p", help="simulates the process without making any changes to your computer.", action="store_true")
 args = parser.parse_args()
 
 __version__ = "1.0.0"
