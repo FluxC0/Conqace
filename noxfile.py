@@ -168,6 +168,7 @@ def pin_for_pyoxidizer(session: nox.Session) -> None:
         # fmt: off
         "pip-compile",
         "--upgrade",
+        "--allow-unsafe",
         "--index-url", "https://pypi.org/simple",
         "--generate-hashes",
         "--resolver", "backtracking",
