@@ -17,7 +17,7 @@ A simple python script that takes care of updates for you, and then sends a push
 
 ## Installation
 
-Be sure to add in your [Pushed app key & secret](https://about.pushed.co/docs/api#credentials) to .env before starting the script!
+Ensure you have a [Pushed app key & secret](https://pushed.co) ready, as you will be prompted for them on startup.
 
 ```bash
   git clone 

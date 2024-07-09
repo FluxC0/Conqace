@@ -1,13 +1,15 @@
-import time
-
-import requests
-import os
-from dotenv import load_dotenv
-from loguru import logger
-from elevate import elevate
 import argparse
-import distro
+import os
 import subprocess
+import time
+import keyring
+
+import distro
+import requests
+
+
+from elevate import elevate
+from loguru import logger
 
 distro_name = distro.id()
 parser = argparse.ArgumentParser()
@@ -17,42 +19,35 @@ parser.add_argument("--flatpak", "-f", help="updates flatpak packages as well.",
 parser.add_argument("--snap", "-s", help="updates snaps as well.", action="store_true")
 parser.add_argument("--no-notify", "-N", help="skips the phone notification.", action="store_true")
 parser.add_argument("--version", "-V", help="displays the version.", action="store_true")
+parser.add_argument("--pretend", "-p", help="simulates the process without making any changes to your computer.", action="store_true")
 args = parser.parse_args()
 
 __version__ = "1.0.0"
 
 
-def first_run(conqace=None):
+def first_run():
     if args.version:
         print("Conqace v" + __version__)
         exit(0)
-    if os.path.exists(".env"):
-        load_dotenv()
+    if keyring.get_password('pushed_api', '<appkey>') is None or keyring.get_password('pushed_api', '<appsecret>') is None:
+        import getpass
+        appkey = getpass.getpass("Enter your pushed app key (not secret). this will be safely stored in your system's keyring: ")
+        appsecret = input("Enter your pushed app secret (not key). this will be safely stored in your system's keyring.")
+        keyring.set_password('pushed_api', '<appkey>', appkey)
+        keyring.set_password('pushed_api', '<appsecret>', appsecret)
         temppl = {
-            "app_key": os.getenv("PUSHED_APP_KEY"),
-            "app_secret": os.getenv('PUSHED_APP_SECRET'),
+            "app_key": keyring.get_password('pushed_api', '<appkey>'),
+            "app_secret": keyring.get_password('pushed_api', '<appsecret>'),
             "target_type": "app",
             "content": "Update Successful."
         }
-        return temppl
+
     else:
 
-        with open(r".env", "w+") as environfile:
-            logger.info("No .env file found. Creating new one.")
-            logger.info("Please enter in your Pushed App Key (not the secret)")
-            logger.info("No .env file found. Creating new one.")
-            logger.info("Please enter in your Pushed App Key (not the secret)")
-            appkey = input()
-            logger.info("Please enter in your App Secret (not the key)")
-            appsecret = input()
-            logger.info("writing to .env file...")
-            environfile.write(f"PUSHED_APP_KEY={appkey}\nPUSHED_APP_SECRET={appsecret}")
-            logger.info("done.")
 
-        load_dotenv()
         temppl = {
-            "app_key": os.getenv("PUSHED_APP_KEY"),
-            "app_secret": os.getenv('PUSHED_APP_SECRET'),
+            "app_key": keyring.get_password('pushed_api', '<appkey>'),
+            "app_secret": keyring.get_password('pushed_api', '<appsecret>'),
             "target_type": "app",
             "content": "Update Successful."
         }
@@ -110,18 +105,23 @@ def notification():
 
 
 def version_checking():
-    if distro_name in ("ubuntu", "debian", "linuxmint", "raspbian"):
-        logger.info("Distro identified as Debian/Debian based. Using apt. ")
-        ubuntu_apt()
-    elif distro.id() in "gentoo":
-        logger.info("Distro identified as Gentoo. Using emerge/portage. ")
-        gentoo_emerge()
-    elif distro.id() in "arch":
-        logger.info("Distro identified as Arch. using pacman.  ")
-        arch_pacman()
+    if args.pretend:
+        logger.info("Running in pretend mode. skipping the rest of the script.")
+        logger.info("Sending notification")
+        notification()
     else:
-        logger.error("Your distribution is unsupported.  ")
-        exit(0)
+        if distro_name in ("ubuntu", "debian", "linuxmint", "raspbian"):
+            logger.info("Distro identified as Debian/Debian based. Using apt. ")
+            ubuntu_apt()
+        elif distro.id() in "gentoo":
+            logger.info("Distro identified as Gentoo. Using emerge/portage. ")
+            gentoo_emerge()
+        elif distro.id() in "arch":
+            logger.info("Distro identified as Arch. using pacman.  ")
+            arch_pacman()
+        else:
+            logger.error("Your distribution is unsupported.  ")
+            exit(0)
 
 
 def arch_pacman():
