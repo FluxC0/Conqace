@@ -54,4 +54,4 @@ register_target("install", make_install, depends = ["exe"], default = True)
 # be resolved.
 resolve_targets()
 
-policy.resources_location_fallback = "filesystem-relative:prefix"
+
