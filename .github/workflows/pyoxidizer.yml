@@ -1,0 +1,58 @@
+---
+name: Build binaries using pyOxidizer
+
+on:
+  push:
+    tags: ["*"]
+  workflow_dispatch:
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PIP_NO_PYTHON_VERSION_WARNING: "1"
+
+permissions: {}
+
+jobs:
+  build:
+    name: Build binary for ${{ matrix.runs-on }}
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      fail-fast: false
+      matrix:
+        runs-on:
+          # Even Go binaries built on 22.04 don't work on 20.04.
+          - ubuntu-20.04
+          - windows-latest
+          - macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # get correct version
+      - uses: actions/setup-python@v5
+        with:
+          # Double-check latest version supported by PyOxidizer:
+          # https://github.com/indygreg/PyOxidizer/releases/
+          python-version: "3.10"
+
+      - run: python -Im pip install nox
+      - run: nox -e oxidize
+
+      - name: check binary
+        shell: bash
+        run: |
+          cd build/*/release/install/
+          ./doc2dash --version
+        if: runner.os != 'Windows'
+
+      - name: check windows binary
+        shell: bash
+        run: |
+          cd build/*/release/install/
+          ./doc2dash.exe --version
+        if: runner.os == 'Windows'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: binary-${{ matrix.runs-on }}
+          path: build/*
