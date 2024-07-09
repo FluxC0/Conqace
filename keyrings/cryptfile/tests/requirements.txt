@@ -1,0 +1,6 @@
+pytest >= 2.8
+pytest-cov
+keyring[testing]
+
+pycryptodome
+argon2_cffi
