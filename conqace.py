@@ -30,7 +30,9 @@ def first_run():
         return temppl
     else:
 
-        environfile = open(r".env", "w+")
+        with open(r".env", "w+") as environfile:
+            logger.info("No .env file found. Creating new one.")
+            logger.info("Please enter in your Pushed App Key (not the secret)")
         logger.info("No .env file found. Creating new one.")
         logger.info("Please enter in your Pushed App Key (not the secret)")
         appkey = input()
