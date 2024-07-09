@@ -7,7 +7,6 @@ import keyring
 import distro
 import requests
 
-
 from elevate import elevate
 from loguru import logger
 
@@ -19,7 +18,8 @@ parser.add_argument("--flatpak", "-f", help="updates flatpak packages as well.",
 parser.add_argument("--snap", "-s", help="updates snaps as well.", action="store_true")
 parser.add_argument("--no-notify", "-N", help="skips the phone notification.", action="store_true")
 parser.add_argument("--version", "-V", help="displays the version.", action="store_true")
-parser.add_argument("--pretend", "-p", help="simulates the process without making any changes to your computer.", action="store_true")
+parser.add_argument("--pretend", "-p", help="simulates the process without making any changes to your computer.",
+                    action="store_true")
 args = parser.parse_args()
 
 __version__ = "1.0.0"
@@ -29,10 +29,13 @@ def first_run():
     if args.version:
         print("Conqace v" + __version__)
         exit(0)
-    if keyring.get_password('pushed_api', '<appkey>') is None or keyring.get_password('pushed_api', '<appsecret>') is None:
+    if keyring.get_password('pushed_api', '<appkey>') is None or keyring.get_password('pushed_api',
+                                                                                      '<appsecret>') is None:
         import getpass
-        appkey = getpass.getpass("Enter your pushed app key (not secret). this will be safely stored in your system's keyring: ")
-        appsecret = input("Enter your pushed app secret (not key). this will be safely stored in your system's keyring.")
+        appkey = getpass.getpass(
+            "Enter your pushed app key (not secret). this will be safely stored in your system's keyring: ")
+        appsecret = input(
+            "Enter your pushed app secret (not key). this will be safely stored in your system's keyring.")
         keyring.set_password('pushed_api', '<appkey>', appkey)
         keyring.set_password('pushed_api', '<appsecret>', appsecret)
         temppl = {
@@ -43,7 +46,6 @@ def first_run():
         }
 
     else:
-
 
         temppl = {
             "app_key": keyring.get_password('pushed_api', '<appkey>'),
@@ -83,7 +85,7 @@ def start_update():
         version_checking()
 
     else:
-        logger.warning("Not elevated. Please enter sudo password.")
+        logger.warning("Not elevated.")
         elevate(graphical=False)
 
 
@@ -116,9 +118,10 @@ def version_checking():
         elif distro.id() in "gentoo":
             logger.info("Distro identified as Gentoo. Using emerge/portage. ")
             gentoo_emerge()
-        elif distro.id() in "arch":
+        elif distro.id() in ("arch", "endeavouros", "manjaro"):
             logger.info("Distro identified as Arch. using pacman.  ")
             arch_pacman()
+
         else:
             logger.error("Your distribution is unsupported.  ")
             exit(0)

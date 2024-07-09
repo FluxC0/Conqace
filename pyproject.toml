@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "Conqace"
-version = "0.1.0"
+version = "0.2.0"
 description = "A Python-based update manager."
 authors = ["Your Name <you@example.com>"]
 readme = "README.md"
@@ -44,3 +44,5 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/fluxc0/conqace"
 Issues = "https://github.com/fluxc0/conqace/issues"
+
+
