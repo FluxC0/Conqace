@@ -12,6 +12,9 @@ distro_name = distro.id()
 parser = argparse.ArgumentParser()
 
 parser.add_argument("--verbose", "-v", help="runs command verbosely. helpful for debugging!", action="store_true")
+parser.add_argument("--flatpak", "-f", help="updates flatpak packages as well.", action="store_true")
+parser.add_argument("--snap", "-s", help="updates snaps as well.", action="store_true")
+parser.add_argument("--no-notify", "-N", help="skips the phone notification.", action="store_true")
 args = parser.parse_args()
 
 load_dotenv()
@@ -21,6 +24,19 @@ payload = {
     "target_type": "app",
     "content": "Update Successful."
 }
+
+
+def snappak():
+    if args.flatpak:
+        logger.info("--flatpak argument selected. updating flatpak packages in addition to system packages.")
+        time.sleep(2)
+        os.system("flatpak update")
+    if args.snap:
+        logger.info("--snap argument selected. updating snaps in addition to system packages.")
+        time.sleep(2)
+        os.system("snap refresh")
+    else:
+        logger.info("just updating system packages.")
 
 
 def check_elevation():
@@ -35,6 +51,7 @@ def start_update():
     elevated = check_elevation()
     if elevated == 0:
         logger.success("Elevated, continuing.")
+        snappak()
         version_checking()
 
     else:
@@ -43,15 +60,19 @@ def start_update():
 
 
 def notification():
-    r = requests.post("https://api.pushed.co/1/push", data=payload)
-    if "error" in r.json():
-        logger.error(r.text)
-        logger.error("Failed to send push notification")
-        logger.warning("Update Complete, but notification failed. Exiting Application.")
-        exit(1)
+    if not args.no_notify:
+        r = requests.post("https://api.pushed.co/1/push", data=payload)
+        if "error" in r.json():
+            logger.error(r.text)
+            logger.error("Failed to send push notification")
+            logger.warning("Update Complete, but notification failed. Exiting Application.")
+            exit(1)
+        else:
+            logger.success("Push notification sent")
+            logger.success("Emerge Complete. Exiting Application.")
+            exit(0)
     else:
-        logger.success("Push notification sent")
-        logger.success("Emerge Complete. Exiting Application.")
+        logger.info("Skipped notification due to --no-notify. Closing Application.")
         exit(0)
 
 
@@ -62,11 +83,21 @@ def version_checking():
     elif distro.id() in "gentoo":
         logger.info("Distro identified as Gentoo. Using emerge/portage. ")
         gentoo_emerge()
+    elif distro.id() in "arch":
+        logger.info("Distro identified as Arch. using pacman.  ")
+        arch_pacman()
     else:
         logger.error("Your distribution is unsupported.  ")
         exit(0)
 
 
+def arch_pacman():
+    logger.info("Running pacman.")
+    time.sleep(2)
+    os.system("yes | pacman -Syu > /dev/null")
+    logger.info("complete.")
+    logger.info("sending notification.")
+    notification()
 def gentoo_emerge():
     logger.info("Syncing with emaint.")
     time.sleep(2)
