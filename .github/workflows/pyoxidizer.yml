@@ -34,7 +34,7 @@ jobs:
         with:
           # Double-check latest version supported by PyOxidizer:
           # https://github.com/indygreg/PyOxidizer/releases/
-          python-version: "3.10"
+          python-version: "3.12"
 
       - run: python -Im pip install nox
       - run: nox -e oxidize
