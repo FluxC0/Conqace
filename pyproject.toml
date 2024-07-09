@@ -4,6 +4,9 @@ version = "0.1.0"
 description = "A Python-based update manager."
 authors = ["Your Name <you@example.com>"]
 readme = "README.md"
+packages = [
+    { include = "conqace", from = "src" },
+]
 
 [tool.poetry.dependencies]
 
