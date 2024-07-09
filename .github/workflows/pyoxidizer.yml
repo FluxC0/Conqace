@@ -1,10 +1,9 @@
 ---
 name: Build binaries using pyOxidizer
 
-on:
-  push:
-    tags: ["*"]
-  workflow_dispatch:
+on: [push, pull_request]
+  
+
 
 env:
   PIP_DISABLE_PIP_VERSION_CHECK: "1"
